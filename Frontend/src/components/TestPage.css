@@ -1,0 +1,274 @@
+/* General Styles */
+.container {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.exitButton {
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+}
+
+.content {
+  display: flex;
+  gap: 20px;
+}
+
+.questionArea {
+  flex: 3;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+
+/* Navigation Bar inside questionArea */
+.navigationBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  /* background-color: #e6f3ff; */
+  border-bottom: 1px solid rgb(112, 112, 112);
+  padding: 10px;
+  /* border-radius: 8px; */
+}
+
+.questionNumber {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.questionDetails {
+  font-size: 1em;
+  color: #555;
+}
+
+
+
+/* navbar end */
+
+
+.timer {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.questionDisplay {
+  margin-bottom: 20px;
+}
+
+.button {
+  padding: 10px;
+  background-color: #e0e0e0;
+  border: none;
+  cursor: pointer;
+}
+
+.submitButton {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.sidePanel {
+  flex: 1;
+  background-color: #e6f3ff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navigationPanel {
+  margin-top: 20px;
+}
+
+.questionGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.questionButton {
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+}
+
+.activeQuestion {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Option Styles */
+.option {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.option:hover {
+  background-color: #e0e0e0;
+}
+
+.option.selected {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.option input[type="radio"],
+.option input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/*styles to handle button color */
+
+/* Button Styles */
+/* Button Styles with Hover Effects */
+/* Clear button styling */
+.clearResponseButton {
+  background-color: red;
+  border-radius: 2px;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.clearResponseButton:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+}
+
+/* Mark for Review button styling */
+.markForReviewButton {
+  background-color: rgb(110, 0, 110);
+  border-radius: 2px;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.markForReviewButton:hover {
+  background-color: darkviolet;
+  transform: scale(1.05);
+}
+
+/* Save and Next button styling */
+.saveAndNextButton {
+  background-color: green;
+  border-radius: 2px;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.saveAndNextButton:hover {
+  background-color: darkgreen;
+  transform: scale(1.05);
+}
+
+/* Question Button Styles with Hover Effects */
+.questionButton {
+  background-color: white;
+  border: 1px solid #a3a3a3;
+  border-radius: 3px;
+  padding: 10px;
+  margin: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.questionButton:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+
+
+
+
+.questionButton.visitedButNotAnswered {
+  background-color: red;
+  border-radius: 3px;
+  color: white;
+}
+
+.questionButton.markedForReview {
+  background-color: rgb(110, 0, 110);
+  border-radius: 3px;
+  color: white;
+}
+
+.questionButton.answered {
+  background-color: rgb(0, 95, 0);
+  border-radius: 3px;
+  color: white;
+}
+
+
+
+
+/* Submit Button Styles */
+.submitButton {
+  background-color: #007bff; /* Blue background */
+  color: #fff; /* White text */
+  border: none; /* Remove default border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 20px; /* Top/bottom and left/right padding */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth background and transform transition */
+  margin-left: 30%;   
+}
+
+/* Submit Button Hover Effect */
+.submitButton:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}

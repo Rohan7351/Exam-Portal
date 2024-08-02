@@ -163,3 +163,47 @@
   color: red;
   cursor: pointer;
 }
+
+
+
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group textarea[name="explanation"] {
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.form-group textarea[name="explanation"]::placeholder {
+  color: #888;
+}
+
+
+/* AddQuestions.css */
+
+/* Styles for the Create Test button */
+.button-create-test {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  padding: 0.5rem 1rem; /* Vertical and horizontal padding */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 1rem; /* Font size */
+  font-weight: bold; /* Bold text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+  margin-left:  40%; /* Vertical gap */
+}
+
+.button-create-test:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.button-create-test:focus {
+  outline: none; /* Remove focus outline */
+  box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Blue shadow for focus */
+}

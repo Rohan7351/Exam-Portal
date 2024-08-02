@@ -2,6 +2,8 @@
 // src/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AdminSideBar from './AdminSidebar';
+import UserSidebar  from './UserSidebar';
 import axios from 'axios';
 import './HomePage.css';
 
@@ -12,15 +14,32 @@ const HomePage = () => {
     useEffect(() => {
         const fetchTests = async () => {
             try {
+                // Retrieve the JWT token from local storage
+                const token = localStorage.getItem('jwtToken');
+                
+                // Ensure the token is available
+                if (!token) {
+                    console.error('No JWT token found');
+                    return;
+                }
+            
+                // Log the token for debugging (optional)
+                console.log('Using JWT token:', token);
+            
+                // Make the GET request with the JWT token in the Authorization header
                 const response = await axios.get('http://localhost:9900/test/get/all', {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Add the JWT token to the Authorization header
                     }
                 });
+            
+                // Set the response data to the state
                 setTests(response.data);
             } catch (error) {
                 console.error('Error fetching test details:', error);
             }
+            
         };
 
         fetchTests();
@@ -32,6 +51,8 @@ const HomePage = () => {
 
     return (
         <div className="home-page">
+            <AdminSideBar></AdminSideBar>
+            {/* <UserSidebar></UserSidebar> */}
             <header className="header">
                 <h1>Test List</h1>
             </header>

@@ -1,0 +1,13 @@
+.view-results {
+    padding: 20px;
+  }
+  
+  .view-results ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .view-results ul li {
+    margin: 10px 0;
+  }
+  

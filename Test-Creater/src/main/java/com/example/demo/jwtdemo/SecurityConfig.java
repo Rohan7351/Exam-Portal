@@ -42,20 +42,21 @@ public class SecurityConfig {
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(corsFilter(), CorsFilter.class)
+//                .addFilterBefore(corsFilter(), CorsFilter.class)
                 .build();	
 	}
 	
-	@Bean
-	public CorsFilter corsFilter() {
-		UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
-		CorsConfiguration corsConfiguration=new CorsConfiguration();
-		corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
-		corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
-		corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
-		source.registerCorsConfiguration("*", corsConfiguration);
-		return new CorsFilter(source);
-	}
+//	 @Bean
+//	    public CorsFilter corsFilter() {
+//	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//	        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//	        corsConfiguration.setAllowedOrigins(Collections.singletonList("*")); // or use specific origins
+//	        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//	        corsConfiguration.setAllowedHeaders(Arrays.asList("*")); // or use specific headers
+//	        corsConfiguration.setAllowCredentials(true);
+//	        source.registerCorsConfiguration("/**", corsConfiguration);
+//	        return new CorsFilter(source);
+//	    }
 	
 
 }

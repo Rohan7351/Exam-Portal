@@ -1,5 +1,8 @@
 package com.example.demo.jwtdemo;
 
+import java.util.HashMap;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:3000")
 public class AuthController {
 	
 	private final JwtUtil jwtUtil;
@@ -19,9 +23,9 @@ public class AuthController {
 	private final AuthManager authManager;
 	
 	@PostMapping("/login")
-	public String login(@RequestParam String Username,@RequestParam String password) {
-		authManager.authVerify(Username, password);
-		return jwtUtil.generateToken(Username);
+	public String login(@RequestBody HashMap<String, String> user) {
+		authManager.authVerify(user.get("Username"), user.get("password"));
+		return jwtUtil.generateToken(user.get("Username"));
 	}
 	
 	@PostMapping("/register")

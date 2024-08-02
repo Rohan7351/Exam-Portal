@@ -1,0 +1,46 @@
+/* AdminSidebar.css */
+
+.admin-sidebar {
+    width: 250px;
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 1rem;
+    position: fixed; /* Fixed positioning to stick sidebar */
+    height: 100vh; /* Full height */
+    border-right: 1px solid #dee2e6; /* Border for separation */
+  }
+  
+  .sidebar-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #343a40; /* Dark gray color */
+  }
+  
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-menu li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .sidebar-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #007bff; /* Blue color */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #e9ecef; /* Light gray background on hover */
+    color: #0056b3; /* Darker blue color on hover */
+  }
+  
+  .sidebar-link.active {
+    background-color: #007bff; /* Blue background for active link */
+    color: white; /* White text color for active link */
+  }
+  

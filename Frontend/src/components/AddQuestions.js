@@ -26,6 +26,7 @@ const AddQuestions = () => {
     options: [""],
     correctOption: "",
     correctAnswer: "",
+     explanation: ""
   });
   const [errors, setErrors] = useState({});
 
@@ -55,7 +56,7 @@ const AddQuestions = () => {
 
   const handleSaveQuestion = () => {
     if (!validateForm()) return;
-
+  
     const newQuestion = {
       type: questionForm.type,
       point: questionForm.point,
@@ -64,13 +65,14 @@ const AddQuestions = () => {
                questionForm.type === "TF" ? ["true", "false"] : [""],
       correctOption: questionForm.type === "MCQ" || questionForm.type === "TF" ? questionForm.correctOption : undefined,
       correctAnswer: questionForm.type === "FITB" ? questionForm.correctAnswer : undefined,
+      explanation: questionForm.explanation,  // Add explanation here
     };
-
+  
     setTestDetails(prev => ({
       ...prev,
       questions: [...prev.questions, newQuestion]
     }));
-
+  
     setShowModal(false);
     setQuestionForm({
       type: "",
@@ -79,9 +81,12 @@ const AddQuestions = () => {
       options: [""],
       correctOption: "",
       correctAnswer: "",
+      explanation: "",  // Reset explanation
     });
     setErrors({});
+    console.log(JSON.stringify(testDetails))
   };
+  
 
   const handleOptionChange = (index, value) => {
     setQuestionForm(prev => {
@@ -187,80 +192,87 @@ const AddQuestions = () => {
           <Modal.Title>Question no.{testDetails.questions.length + 1}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Question Type</label>
-                <select name="type" value={questionForm.type} onChange={handleQuestionFormChange}>
-                  <option value="">Select Type</option>
-                  <option value="MCQ">Multiple Choice</option>
-                  <option value="TF">True/False</option>
-                  <option value="FITB">Fill in the Blank</option>
-                </select>
-                {errors.type && <p className="error">{errors.type}</p>}
-              </div>
-              <div className="form-group">
-                <label>Points</label>
-                <input type="number" name="point" value={questionForm.point} placeholder="Enter points" onChange={handleQuestionFormChange} />
-                {errors.point && <p className="error">{errors.point}</p>}
-              </div>
-            </div>
-            <div className="form-group">
-              <label>Question</label>
-              <input type="text" name="text" value={questionForm.text} placeholder="Enter your question details" onChange={handleQuestionFormChange} />
-              {errors.text && <p className="error">{errors.text}</p>}
-            </div>
-            {questionForm.type === "MCQ" && (
-              <div>
-                <label>Options</label>
-                {questionForm.options.map((option, index) => (
-                  <div key={index} className="option-item">
-                    <span>{String.fromCharCode(65 + index)}.</span>
-                    <input className="option-input" type="text" value={option} onChange={(e) => handleOptionChange(index, e.target.value)} />
-                    <button className="close-button" type="button" onClick={() => handleRemoveOption(index)}>X</button>
-                  </div>
-                ))}
-                <Button onClick={handleAddOption}>Add Option</Button>
-                {errors.options && <p className="error">{errors.options}</p>}
-                <div className="form-group">
-                  <label>Correct Option</label>
-                  <select name="correctOption" value={questionForm.correctOption} onChange={handleQuestionFormChange}>
-                    <option value="">Select Correct Option</option>
-                    {questionForm.options.map((option, index) => (
-                      <option key={index} value={option}>{String.fromCharCode(65 + index)}</option>
-                    ))}
-                  </select>
-                  {errors.correctOption && <p className="error">{errors.correctOption}</p>}
-                </div>
-              </div>
-            )}
-            {questionForm.type === "TF" && (
-              <div className="true-false">
-                <label>Correct Answer</label>
-                <select name="correctOption" value={questionForm.correctOption} onChange={handleQuestionFormChange}>
-                  <option value="">Select Correct Answer</option>
-                  <option value="true">True</option>
-                  <option value="false">False</option>
-                </select>
-                {errors.correctOption && <p className="error">{errors.correctOption}</p>}
-              </div>
-            )}
-            {questionForm.type === "FITB" && (
-              <div>
-                <label>Correct Answer</label>
-                <input type="text" name="correctAnswer" value={questionForm.correctAnswer} onChange={handleQuestionFormChange} />
-                {errors.correctAnswer && <p className="error">{errors.correctAnswer}</p>}
-              </div>
-            )}
-          </form>
-        </Modal.Body>
+  <form>
+    <div className="form-row">
+      <div className="form-group">
+        <label>Question Type</label>
+        <select name="type" value={questionForm.type} onChange={handleQuestionFormChange}>
+          <option value="">Select Type</option>
+          <option value="MCQ">Multiple Choice</option>
+          <option value="TF">True/False</option>
+          <option value="FITB">Fill in the Blank</option>
+        </select>
+        {errors.type && <p className="error">{errors.type}</p>}
+      </div>
+      <div className="form-group">
+        <label>Points</label>
+        <input type="number" name="point" value={questionForm.point} placeholder="Enter points" onChange={handleQuestionFormChange} />
+        {errors.point && <p className="error">{errors.point}</p>}
+      </div>
+    </div>
+    <div className="form-group">
+      <label>Question</label>
+      <input type="text" name="text" value={questionForm.text} placeholder="Enter your question details" onChange={handleQuestionFormChange} />
+      {errors.text && <p className="error">{errors.text}</p>}
+    </div>
+    {questionForm.type === "MCQ" && (
+      <div>
+        <label>Options</label>
+        {questionForm.options.map((option, index) => (
+          <div key={index} className="option-item">
+            <span>{String.fromCharCode(65 + index)}.</span>
+            <input className="option-input" type="text" value={option} onChange={(e) => handleOptionChange(index, e.target.value)} />
+            <button className="close-button" type="button" onClick={() => handleRemoveOption(index)}>X</button>
+          </div>
+        ))}
+        <Button onClick={handleAddOption}>Add Option</Button>
+        {errors.options && <p className="error">{errors.options}</p>}
+        <div className="form-group">
+          <br></br><br></br>
+          <label>Correct Option</label>
+          <select name="correctOption" value={questionForm.correctOption} onChange={handleQuestionFormChange}>
+            <option value="">Select Correct Option</option>
+            {questionForm.options.map((option, index) => (
+              <option key={index} value={option}>{String.fromCharCode(65 + index)}</option>
+            ))}
+          </select>
+          {errors.correctOption && <p className="error">{errors.correctOption}</p>}
+        </div>
+      </div>
+    )}
+    {questionForm.type === "TF" && (
+      <div className="true-false">
+        <label>Correct Answer</label>
+        <select name="correctOption" value={questionForm.correctOption} onChange={handleQuestionFormChange}>
+          <option value="">Select Correct Answer</option>
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+        {errors.correctOption && <p className="error">{errors.correctOption}</p>}
+      </div>
+    )}
+    {questionForm.type === "FITB" && (
+      <div>
+        <label>Correct Answer</label>
+        <input type="text" name="correctAnswer" value={questionForm.correctAnswer} onChange={handleQuestionFormChange} />
+        {errors.correctAnswer && <p className="error">{errors.correctAnswer}</p>}
+      </div>
+    )}
+    <div className="form-group">
+      <label>Explanation</label>
+      <textarea name="explanation" value={questionForm.explanation} placeholder="Enter explanation" onChange={handleQuestionFormChange} />
+    </div>
+  </form>
+</Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
           <Button variant="primary" onClick={handleSaveQuestion}>Save Question</Button>
         </Modal.Footer>
       </Modal>
       
-      <Button onClick={handleNavigateToDetails}>Create Test and Go to HomePage</Button>
+      <Button className="button-create-test" onClick={handleNavigateToDetails}>Create Test and Go to HomePage</Button>
+
     </div>
   );
 };

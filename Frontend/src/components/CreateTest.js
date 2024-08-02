@@ -26,7 +26,7 @@ const CreateTest = () => {
         e.preventDefault();
         
         
-        navigate('/createtest/addquestions', { state: { testDetails } });
+        navigate('/addquestions', { state: { testDetails } });
     };
 
     return (

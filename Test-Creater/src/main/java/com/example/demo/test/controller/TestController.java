@@ -33,7 +33,7 @@ public class TestController {
 	@GetMapping("get/all")
 	List<Test> getAllTests(@RequestAttribute User user){
 		user.getEmail();
-		return service.getAllTest();
+		return service.getAllTest(user);
 	}
 
 }

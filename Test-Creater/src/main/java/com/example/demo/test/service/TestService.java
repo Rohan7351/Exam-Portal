@@ -12,6 +12,7 @@ import com.example.demo.test.model.Test;
 import com.example.demo.test.model.TestDetails;
 import com.example.demo.test.repository.TestRepository;
 import com.example.demo.user.model.User;
+import com.example.demo.user.model.UserRole;
 import com.example.demo.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,8 @@ public class TestService {
 		}
 	}
 	
-	public List<Test> getAllTest() {
-		return testRepository.findAll();
-	}
+	public List<Test> getAllTest(User user) {
+		if(user.getUserRole().equals(UserRole.ADMIN))return testRepository.findAll();
+		return (List<Test>) userRepository.findByUserName(user.getUserName()).getTests();	}
 
 }

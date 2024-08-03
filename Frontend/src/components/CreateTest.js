@@ -25,9 +25,9 @@ const CreateTest = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         
-        
         navigate('/addquestions', { state: { testDetails } });
-    };
+
+};
 
     return (
         <div className="main-container">

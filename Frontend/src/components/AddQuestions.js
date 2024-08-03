@@ -110,16 +110,25 @@ const AddQuestions = () => {
   const handleNavigateToDetails = async() => {
 
     try {
-      const response = await axios.post('http://localhost:9900/test/insert', testDetails, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-     console.log('Response:', response.data);
-  }
-      catch (error) {
-          console.error('Error:', error);
-        }
+
+      const jwtToken = localStorage.getItem('jwtToken');
+
+     const response = await axios.post('http://localhost:9900/test/insert', testDetails, {
+       headers: {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${jwtToken}`
+       }
+     })
+    console.log('Response:', response.data);
+ 
+     if (!response.ok) {
+       throw new Error('Network response was not ok');
+     }
+ 
+ }catch (error) {
+     console.log('Please try again.');
+     console.error('request failed:', error);
+   }
 
     navigate('/homepage');
   };

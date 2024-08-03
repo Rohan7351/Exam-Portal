@@ -1,5 +1,7 @@
 package com.example.demo.user.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,11 +57,24 @@ public class UserController {
 	void assignTest(@PathVariable String userName,@RequestBody Test test) {
 		userService.assignTest(userName, test);
 	}
-//	find by username
-//	existbyusername
-//	change user
-//	delete
-//	assign
+	
+	@GetMapping("/get/creator")
+	List<User> fetchCreator(@RequestAttribute User user){
+		if(user.getUserRole().equals(UserRole.ADMIN))return userService.getCreator();
+		return null;
+	}
+	
+	@GetMapping("/get/user")
+	List<User> fetchUser(@RequestAttribute User user){
+		if(user.getUserRole().equals(UserRole.ADMIN))return userService.getUser();
+		return null;
+	}
+	
+	@GetMapping("/get/admin")
+	List<User> fetchAdmin(@RequestAttribute User user){
+		if(user.getUserRole().equals(UserRole.ADMIN))return userService.getAdmin();
+		return null;
+	}
 	
 
 }

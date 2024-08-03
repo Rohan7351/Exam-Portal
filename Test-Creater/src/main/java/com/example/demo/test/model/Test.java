@@ -53,4 +53,10 @@ public class Test {
 	@Column(length = 2500)
 	private String description;
 
+	public Test(int id) {
+		super();
+		this.id = id;
+	}
+	
+
 }

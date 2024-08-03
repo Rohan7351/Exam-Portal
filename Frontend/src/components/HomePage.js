@@ -2,9 +2,9 @@
 // src/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import AdminSideBar from './AdminSidebar';
 import UserSidebar  from './UserSidebar';
-import axios from 'axios';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -25,6 +25,7 @@ const HomePage = () => {
             
                 // Log the token for debugging (optional)
                 console.log('Using JWT token:', token);
+                
             
                 // Make the GET request with the JWT token in the Authorization header
                 const response = await axios.get('http://localhost:9900/test/get/all', {

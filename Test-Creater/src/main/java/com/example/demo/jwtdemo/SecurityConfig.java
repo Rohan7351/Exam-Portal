@@ -27,7 +27,11 @@ public class SecurityConfig {
 			"/login",
 			"/register",
 			"/send-otp",
-			"/user/insert"
+			"/user/insert",
+			"/user/assign/*",
+			"/user/create",
+			"/user/get/*",
+			"/user/exist/*"
 	};
 	
 	@Bean

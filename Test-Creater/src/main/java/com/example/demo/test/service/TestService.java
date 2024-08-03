@@ -1,5 +1,6 @@
 package com.example.demo.test.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,6 @@ public class TestService {
 	
 	public List<Test> getAllTest(User user) {
 		if(user.getUserRole().equals(UserRole.ADMIN))return testRepository.findAll();
-		return (List<Test>) userRepository.findByUserName(user.getUserName()).getTests();	}
+		return new ArrayList<>( userRepository.findByUserName(user.getUserName()).getTests());	}
 
 }

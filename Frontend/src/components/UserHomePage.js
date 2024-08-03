@@ -1,13 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import './HomePage.css';
+import axios from 'axios';
+import './UserHomePage.css';
+
 
 const HomePage = () => {
   // Sample test data
-  const tests = [
-    { id: 1, title: 'Technical Test', description: 'A test on technical knowledge.' },
-    { id: 2, title: 'Aptitude Test', description: 'A test on logical reasoning and math.' }
-  ];
+  const [tests, setTests] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchTests = async () => {
+            try {
+                // Retrieve the JWT token from local storage
+                const token = localStorage.getItem('jwtToken');
+                
+                // Ensure the token is available
+                if (!token) {
+                    console.error('No JWT token found');
+                    return;
+                }
+            
+                // Log the token for debugging (optional)
+                console.log('Using JWT token:', token);
+            
+                // Make the GET request with the JWT token in the Authorization header
+                const response = await axios.get('http://localhost:9900/test/get/all', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Add the JWT token to the Authorization header
+                    }
+                });
+            
+                // Set the response data to the state
+                setTests(response.data);
+            } catch (error) {
+                console.error('Error fetching test details:', error);
+            }
+            
+        };
+
+        fetchTests();
+    }, []);
+
 
   return (
     <div className="home-page">

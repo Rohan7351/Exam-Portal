@@ -12,10 +12,15 @@ import AdminDashboard from './components/AdminDashboard';
 import ManageTests from './components/ManageTests';
 import ViewResults from './components/ViewResult';
 import UserHomePage from './components/UserHomePage';
+import CreatorPage from './components/CreatorPage';
+import Navigation from './components/Navbar';
 
 function App() {
   return (/*  */
     <Router>
+      <Navigation />
+            <div className="container mt-4">
+
       <Routes>
         <Route path="/" element={<CreateTest />} />
         <Route path="/addquestions" element={<AddQuestions />} />
@@ -28,12 +33,15 @@ function App() {
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<SignUp/>}/>
+        <Route path='/creator' element={<CreatorPage/>}/>
         
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/admin/manage-tests" component={ManageTests} />
         <Route path="/admin/view-results" component={ViewResults} />
-        
+      
       </Routes>
+
+      </div>
     </Router>
   );
 }

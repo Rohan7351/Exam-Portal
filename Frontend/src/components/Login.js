@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Login.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,79 +10,73 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState('');
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setFormData({
       ...formData,
       [name]: value,
     });
-
-    // if (name === 'password') {
-    //   const passwordErrors = validatePassword(value);
-    //   setErrors({
-    //     ...errors,
-    //     password: passwordErrors,
-    //   });
-    // }
   };
-
-  // const validatePassword = (password) => {
-  //   const minLength = 8;
-  //   const hasUpperCase = /[A-Z]/.test(password);
-  //   const hasLowerCase = /[a-z]/.test(password);
-  //   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-  //   if (password.length < minLength) {
-  //     return `Password must be at least ${minLength} characters long.`;
-  //   }
-  //   if (!hasUpperCase) {
-  //     return 'Password must contain at least one uppercase letter.';
-  //   }
-  //   if (!hasLowerCase) {
-  //     return 'Password must contain at least one lowercase letter.';
-  //   }
-  //   if (!hasSpecialChar) {
-  //     return 'Password must contain at least one special character.';
-  //   }
-  //   return '';
-  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     let formErrors = {};
     if (!formData.username) {
       formErrors.username = 'Username is required.';
     }
-    // const passwordValidationMessage = validatePassword(formData.password);
-    // if (passwordValidationMessage) {
-    //   formErrors.password = passwordValidationMessage;
-    // }
-
+  
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
     }
-     try{
-     // Send a POST request with username and password in the request body
-     const response = await axios.post('http://localhost:9900/login', {
-      Username: formData.username,
-      password: formData.password
-    });
+    
+    
 
-      console.log(JSON.stringify(response));
+    try {
+      // Send login request
+      const response = await axios.post('http://localhost:9900/login', {
+        Username: formData.username,
+        password: formData.password
+      });
+        console.log(formData);
+       console.log(response.data);
+      // Clear any existing JWT token
+      localStorage.removeItem('jwtToken');
+  
+      // Store the new JWT token
       localStorage.setItem('jwtToken', response.data);
-      console.log(response.data);
-      console.log('Login successful');
-      window.location.href = '/homepage'; // Redirect to home or another page
+       
+      // Fetch user info with the new token
+      const userInfo = await axios.get(`http://localhost:9900/user/get/${formData.username}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${response.data}`
+        }
+      });
+  
+      // Store user info in local storage
+      localStorage.setItem('userInfo', JSON.stringify(userInfo.data));
+  
+      // Redirect based on user role
+      const userRole = userInfo.data.userRole;
+      if (userRole === 'ADMIN') {
+        navigate('/admin');
+      } else if (userRole === 'CREATER') {
+        navigate('/creator');
+      } else if (userRole === 'USER') {
+        navigate('/user');
+      } else {
+        navigate('/homepage');
+      }
     } catch (error) {
       setLoginError('Invalid username or password. Please try again.');
       console.error('Login failed:', error);
-      console.log(formData);
     }
   };
+  
 
   return (
     <div className="login-page">

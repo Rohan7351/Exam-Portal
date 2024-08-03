@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContest';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
+
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState('');
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,23 +36,15 @@ const Login = () => {
       return;
     }
     
-    
-
     try {
-      // Send login request
       const response = await axios.post('http://localhost:9900/login', {
         Username: formData.username,
         password: formData.password
       });
-        console.log(formData);
-       console.log(response.data);
-      // Clear any existing JWT token
+
       localStorage.removeItem('jwtToken');
-  
-      // Store the new JWT token
       localStorage.setItem('jwtToken', response.data);
-       
-      // Fetch user info with the new token
+  
       const userInfo = await axios.get(`http://localhost:9900/user/get/${formData.username}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -57,15 +52,13 @@ const Login = () => {
         }
       });
   
-      // Store user info in local storage
       localStorage.setItem('userInfo', JSON.stringify(userInfo.data));
-  
-      // Redirect based on user role
+      login();
       const userRole = userInfo.data.userRole;
       if (userRole === 'ADMIN') {
         navigate('/admin');
       } else if (userRole === 'CREATER') {
-        navigate('/creator');
+        navigate('/creator/dashboard');
       } else if (userRole === 'USER') {
         navigate('/user');
       } else {
@@ -76,38 +69,45 @@ const Login = () => {
       console.error('Login failed:', error);
     }
   };
-  
 
   return (
     <div className="login-page">
       <div className="login-container">
         <h1>LOGIN</h1>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter your username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-            {errors.username && <p className="error">{errors.username}</p>}
+          <div className="row">
+            <div className="col-form-group">
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Enter your username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.username && <p className="error">{errors.username}</p>}
+              </div>
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            {errors.password && <p className="error">{errors.password}</p>}
+          <div className="row">
+            <div className="col-form-group">
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.password && <p className="error">{errors.password}</p>}
+              </div>
+            </div>
           </div>
           {loginError && <p className="error">{loginError}</p>}
           <button type="submit">Sign In</button>

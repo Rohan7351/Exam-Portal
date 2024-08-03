@@ -1,58 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Modal, Button, Form, ListGroup } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CreatorPage.css'; // Import custom CSS file if needed
 
-// const testData = [
-//   // Your test data here
-//   { "title": "COMPUTER", "passingScore": "34", "duration": "50", "startTime": "2024-08-02T08:42", "endTime": "2024-08-17T08:42", "category": "APTITUDE", "description": "JGFKYUT", "difficultyLevel": "MEDIUM", "questions": [] }
-// ];
-
 const CreatorPage = () => {
-
   const [tests, setTests] = useState([]);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchTests = async () => {
-            try {
-                // Retrieve the JWT token from local storage
-                const token = localStorage.getItem('jwtToken');
-                
-                // Ensure the token is available
-                if (!token) {
-                    console.error('No JWT token found');
-                    return;
-                }
-            
-                // Log the token for debugging (optional)
-                console.log('Using JWT token:', token);
-                
-            
-                // Make the GET request with the JWT token in the Authorization header
-                const response = await axios.get('http://localhost:9900/test/get/all', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // Add the JWT token to the Authorization header
-                    }
-                });
-            
-                // Set the response data to the state
-                setTests(response.data);
-            } catch (error) {
-                console.error('Error fetching test details:', error);
-            }
-            
-        };
-
-        fetchTests();
-    }, []);
-
   const [showModal, setShowModal] = useState(false);
   const [selectedTest, setSelectedTest] = useState(null);
   const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+          console.error('No JWT token found');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:9900/test/get/all', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        setTests(response.data);
+      } catch (error) {
+        console.error('Error fetching test details:', error);
+      }
+    };
+
+    fetchTests();
+  }, []);
 
   const handleShow = (test) => {
     setSelectedTest(test);
@@ -70,30 +53,27 @@ const CreatorPage = () => {
   };
 
   const saveInput = (username) => {
-    // Implement your saveInput logic here
     console.log(`Assigning test ID ${selectedTest.id} to ${username}`);
     // Add API call or other logic to save the username
   };
 
   return (
     <div className="creator-page container">
-      <h1 className="my-4">Created Tests</h1>
-      <ListGroup>
+      <h1 className="my-4">Created Tests List</h1>
+      <div className="test-cards-container">
         {tests.map((test) => (
-          <ListGroup.Item key={test.id} className="d-flex justify-content-between align-items-center">
-            <div>
-              <h5>{test.title || "Untitled Test"}</h5>
-              <p>Category: {test.category}</p>
-              <p>Difficulty Level: {test.difficultyLevel}</p>
-              <p>Duration: {test.duration} minutes</p>
-              <p>Passing Score: {test.passingScore}</p>
-            </div>
-            <Button variant="primary" onClick={() => handleShow(test)}>
+          <div key={test.id} className="test-card">
+            <h5>{test.title || "Untitled Test"}</h5>
+            <p>Category: {test.category}</p>
+            <p>Difficulty Level: {test.difficultyLevel}</p>
+            <p>Duration: {test.duration} minutes</p>
+            <p>Passing Score: {test.passingScore}</p>
+            <Button className="assign-button" variant="primary" onClick={() => handleShow(test)}>
               Assign Test
             </Button>
-          </ListGroup.Item>
+          </div>
         ))}
-      </ListGroup>
+      </div>
 
       {/* Modal for Assign Test */}
       <Modal show={showModal} onHide={handleClose}>

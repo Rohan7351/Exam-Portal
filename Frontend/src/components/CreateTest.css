@@ -1,11 +1,10 @@
-General Styles
 .body {
-  background-image: url('../assets/blur-library.jpg');
-  background-size: cover;
+  /* background-image: url('../assets/blur-library.jpg'); */
+  /* background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  min-height: 100vh;
+  min-height: 100vh; */
 }
 
 .create-test-container {

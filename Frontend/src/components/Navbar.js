@@ -1,37 +1,53 @@
-// src/components/Navbar.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContest';
+import './Navbar.css';
 
-import React from 'react';
-import { Navbar, Nav, Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+const Navbar = () => {
 
-const Navigation = () => {
-    const navigate = useNavigate();
+    const { isLoggedIn } = useAuth();
+  
+  
 
-    const handleLogout = () => {
-        // Clear local storage
-        localStorage.clear();
-        
-        // Redirect to login page
-        navigate('/login');
-    };
-
-    return (
-        <Navbar bg="dark" variant="dark" expand="lg">
-            <Navbar.Brand as={Link} to="/">MyApp</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link as={Link} to="/">Home</Nav.Link>
-                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                    <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-                </Nav>
-                <Button
-                 
-                
-                className='logout-buttons' variant="outline-light" onClick={handleLogout}>Logout</Button>
-            </Navbar.Collapse>
-        </Navbar>
-    );
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          <img src="/logo.png" alt="Logo" height="30" className="d-inline-block align-top me-2" />
+          ExamZone
+        </Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">Home</Link>
+            </li>
+            {!isLoggedIn ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/signup">Signup</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">Profile</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/logout">Logout</Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
 };
 
-export default Navigation;
+export default Navbar;

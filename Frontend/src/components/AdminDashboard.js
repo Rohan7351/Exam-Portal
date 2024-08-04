@@ -1,22 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import './AdminDashboard.css';
+import { FaUsers, FaUserTie, FaClipboardList, FaUserPlus } from 'react-icons/fa';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
+  const cards = [
+    { title: 'See all Users', icon: <FaUsers />, link: '/admin/users', color: '#3498db' },
+    { title: 'See all Creators', icon: <FaUserTie />, link: '/admin/creators', color: '#e74c3c' },
+    { title: 'See all Tests', icon: <FaClipboardList />, link: '/admin/tests', color: '#2ecc71' },
+    { title: 'Create a New User', icon: <FaUserPlus />, link: '/admin/create-user', color: '#f39c12' },
+  ];
+
   return (
     <div className="admin-dashboard">
-      <div className="sidebar">
-        <h2>Admin Dashboard</h2>
-        <ul>
-          <li><Link to="/admin/dashboard">Dashboard</Link></li>
-          <li><Link to="/admin/manage-tests">Manage Tests</Link></li>
-          <li><Link to="/admin/view-results">View Results</Link></li>
-        </ul>
-      </div>
-      <div className="main-content">
-        <h1>Welcome, Admin</h1>
-        <p>Select an option from the sidebar to manage tests or view results.</p>
-      </div>
+      <header className="dashboard-header">
+        <h1>Admin Dashboard</h1>
+      </header>
+      <main className="dashboard-content">
+        <div className="card-container">
+          {cards.map((card, index) => (
+            <Link to={card.link} key={index} className="dashboard-card" style={{ backgroundColor: card.color }}>
+              <div className="card-icon">{card.icon}</div>
+              <h2 className="card-title">{card.title}</h2>
+            </Link>
+          ))}
+        </div>
+      </main>
     </div>
   );
 };

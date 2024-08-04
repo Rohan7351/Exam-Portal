@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FaUser, FaClock, FaCheck, FaTimes, FaBookmark, FaArrowRight, FaTrash } from 'react-icons/fa';
 import './TestPage.css';
 
 const TestPage = () => {
@@ -22,30 +23,39 @@ const TestPage = () => {
     const storedTime = localStorage.getItem('timeLeft');
     return storedTime ? parseInt(storedTime, 10) : parseInt(testDetails.duration, 10) * 60 || 0;
   });
-  const [userAnswers, setUserAnswers] = useState({});
   const [visitedQuestions, setVisitedQuestions] = useState({});
   const [markedForReview, setMarkedForReview] = useState({});
-  const [score, setScore] = useState(0);
   const [isExamAccessible, setIsExamAccessible] = useState(true);
+
+  const [testResult, setTestResult] = useState({
+    testDetails: { ...testDetails },
+    questions: testDetails.questions.map(q => ({ ...q, userAnswer: '' })),
+    totalScore: 0
+  });
 
   useEffect(() => {
     const checkExamAccessibility = () => {
       const now = new Date();
       const startTime = new Date(testDetails.startTime);
       const endTime = new Date(testDetails.endTime);
-      console.log( JSON.stringify(testDetails));
       return now >= startTime && now <= endTime;
     };
-
-    setIsExamAccessible(checkExamAccessibility());
-
-    if (isExamAccessible) {
+  
+    const accessible = checkExamAccessibility();
+    setIsExamAccessible(accessible);
+  
+    if (accessible) {
+      const storedTime = localStorage.getItem('timeLeft');
+      const initialTime = storedTime ? parseInt(storedTime, 10) : parseInt(testDetails.duration, 10) * 60;
+  
+      setTimeLeft(initialTime);
+  
       const timer = setInterval(() => {
         setTimeLeft((prevTime) => {
           if (prevTime <= 0) {
-            clearInterval(timer); // Stop the timer
-            localStorage.removeItem('timeLeft'); // Clear the stored time
-            handleSubmitTest(); // Automatically submit when time runs out
+            clearInterval(timer);
+            localStorage.removeItem('timeLeft');
+            handleSubmitTest();
             return 0;
           }
           const newTime = prevTime - 1;
@@ -53,58 +63,59 @@ const TestPage = () => {
           return newTime;
         });
       }, 1000);
-
+  
       return () => clearInterval(timer);
     } else {
       localStorage.removeItem('timeLeft');
     }
-  }, [testDetails, isExamAccessible]);
+  }, [testDetails]);
 
   const calculateScore = useCallback(() => {
-    const correctAnswers = testDetails.questions.reduce((totalPoints, question, index) => {
-      const userAnswer = userAnswers[index];
+    const correctAnswers = testResult.questions.reduce((totalPoints, question) => {
       if (
         (question.type === 'MCQ' || question.type === 'TF') && 
-        userAnswer === question.correctOption
+        question.userAnswer === question.correctOption
       ) {
         return totalPoints + parseInt(question.point, 10);
       }
-      if (question.type === 'FITB' && userAnswer?.toLowerCase() === question.correctAnswer.toLowerCase()) {
+      if (question.type === 'FITB' && question.userAnswer?.toLowerCase() === question.correctAnswer.toLowerCase()) {
         return totalPoints + parseInt(question.point, 10);
       }
       return totalPoints;
     }, 0);
 
-    setScore(correctAnswers);
-  }, [userAnswers, testDetails.questions]);
+    setTestResult(prev => ({
+      ...prev,
+      totalScore: correctAnswers
+    }));
+  }, [testResult.questions]);
 
   useEffect(() => {
     calculateScore();
-  }, [userAnswers, calculateScore]);
+  }, [calculateScore]);
 
   useEffect(() => {
     setVisitedQuestions(prev => ({ ...prev, 0: true }));
   }, []);
 
   const handleAnswerChange = (answer) => {
-    setUserAnswers(prev => ({
+    setTestResult(prev => ({
       ...prev,
-      [currentQuestionIndex]: answer,
+      questions: prev.questions.map((q, index) => 
+        index === currentQuestionIndex ? { ...q, userAnswer: answer } : q
+      )
     }));
   };
 
   const handleQuestionChange = (index) => {
-    if (index >= 0 && index < (testDetails?.questions?.length || 0)) {
+    if (index >= 0 && index < testResult.questions.length) {
       setCurrentQuestionIndex(index);
       setVisitedQuestions(prev => ({ ...prev, [index]: true }));
     }
   };
 
   const handleClearResponse = () => {
-    setUserAnswers(prev => ({
-      ...prev,
-      [currentQuestionIndex]: '',
-    }));
+    handleAnswerChange('');
     setMarkedForReview(prev => ({
       ...prev,
       [currentQuestionIndex]: false,
@@ -120,9 +131,8 @@ const TestPage = () => {
   };
 
   const handleSaveAndNext = () => {
-    // Validation logic
-    const currentQuestion = testDetails?.questions?.[currentQuestionIndex];
-    const currentAnswer = userAnswers[currentQuestionIndex];
+    const currentQuestion = testResult.questions[currentQuestionIndex];
+    const currentAnswer = currentQuestion.userAnswer;
 
     if (currentQuestion.type === 'FITB' && !currentAnswer) {
       alert('Please fill in the answer before saving and moving to the next question.');
@@ -139,7 +149,7 @@ const TestPage = () => {
       [currentQuestionIndex]: false,
     }));
 
-    const nextIndex = (currentQuestionIndex + 1) % testDetails.questions.length;
+    const nextIndex = (currentQuestionIndex + 1) % testResult.questions.length;
     handleQuestionChange(nextIndex);
   };
 
@@ -152,112 +162,131 @@ const TestPage = () => {
 
   const handleSubmitTest = () => {
     calculateScore();
-    alert(`Your score is ${score}`);
-    // Here you can add logic to submit the test to a server
-    navigate('/submit', { state: { score } }); // Example redirect after submission
+    console.log('Test Result:', testResult);
+    const userConfirmed = window.confirm("Are you sure you want to proceed?");
+        
+    if (userConfirmed) {
+      console.log("User confirmed");
+      localStorage.removeItem('timeLeft');
+      navigate('/submit', { state: { testResult } });
+    } else {
+      console.log("User canceled");
+    }
   };
 
   if (!isExamAccessible) {
     return <div className="container"><h1>The exam is not accessible at this time.</h1></div>;
   }
 
-  const currentQuestion = testDetails?.questions?.[currentQuestionIndex] || {};
+  const currentQuestion = testResult.questions[currentQuestionIndex] || {};
 
   return (
-    <div className="container">
-      <header className="header">
+    <div className="test-page-container">
+      <header className="test-page-header">
         <h1>{testDetails?.title || 'Test'}</h1>
+        <div className="test-page-timer">
+          <FaClock /> {formatTime(timeLeft) || 'N/A'}
+        </div>
       </header>
 
-      <div className="content">
-        <div className="questionArea">
-  {/* Navigation Bar */}
-  <div className="navigationBar">
-    <div className="questionNumber">
-      Question No. {currentQuestionIndex + 1}
-    </div>
-    <div className="questionDetails">
-      <span>Points: {currentQuestion.point || 0}</span>
-      <span> | </span>
-      <span>Duration: {formatTime(timeLeft) || 'N/A'}</span>
-    </div>
-  </div>
-  {/* <hr></hr> */}
-  {/* Existing Question Area Content */}
-  {/* <div className="timer">Time Left: {formatTime(timeLeft)}</div> */}
-
-  <div className="questionDisplay">
-    
-    <p>{currentQuestion.text || 'No question available'}</p>
-
-    {currentQuestion.type === 'MCQ' && (
-      <div className="options">
-        {(currentQuestion.options || []).map((option, index) => (
-          <label key={index} className="option">
-            <input
-              type="radio"
-              name="answer"
-              value={option}
-              checked={userAnswers[currentQuestionIndex] === option}
-              onChange={() => handleAnswerChange(option)}
-            />
-            {option}
-          </label>
-        ))}
-      </div>
-    )}
-
-    {currentQuestion.type === 'TF' && (
-      <div className="options">
-        {['true', 'false'].map((option, index) => (
-          <label key={index} className="option">
-            <input
-              type="radio"
-              name="answer"
-              value={option}
-              checked={userAnswers[currentQuestionIndex] === option}
-              onChange={() => handleAnswerChange(option)}
-            />
-            {option.charAt(0).toUpperCase() + option.slice(1)}
-          </label>
-        ))}
-      </div>
-    )}
-
-    {currentQuestion.type === 'FITB' && (
-      <input
-        type="text"
-        value={userAnswers[currentQuestionIndex] || ''}
-        onChange={(e) => handleAnswerChange(e.target.value)}
-        className="input"
-        placeholder="Type your answer here"
-      />
-    )}
-  </div>
-
-  {/* Existing Action Buttons */}
-  <div className="actionButtons">
-    <button className="clearResponseButton" onClick={() => handleAnswerChange('')}>Clear Response</button>
-    <button className="markForReviewButton" onClick={handleMarkForReviewAndNext}>Mark for Review and Next</button>
-    <button className="saveAndNextButton" onClick={handleSaveAndNext}>Save and Next</button>
-    <button className="submitButton" onClick={handleSubmitTest}>Submit Test</button>
-  </div>
-</div>
-
-
-        <div className="sidePanel">
-          <div className="userInfo">
-            <div className="avatar">{testDetails?.username?.[0] || 'U'}</div>
-            <span>{testDetails?.username || 'User'}</span>
+      <div className="test-page-content">
+        <div className="test-page-question-area">
+          <div className="test-page-navigation-bar">
+            <div className="test-page-question-number">
+              Question No. {currentQuestionIndex + 1}
+            </div>
+            <div className="test-page-question-details">
+              <span>Points: {currentQuestion.point || 0}</span>
+            </div>
           </div>
 
-          <div className="navigationPanel">
+          <div className="test-page-question-display">
+            <p>{currentQuestion.text || 'No question available'}</p>
+
+            {currentQuestion.type === 'MCQ' && (
+              <div className="test-page-options">
+                {(currentQuestion.options || []).map((option, index) => (
+                  <label key={index} className={`test-page-option ${currentQuestion.userAnswer === option ? 'test-page-selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="answer"
+                      value={option}
+                      checked={currentQuestion.userAnswer === option}
+                      onChange={() => handleAnswerChange(option)}
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {currentQuestion.type === 'TF' && (
+              <div className="test-page-options">
+                {['true', 'false'].map((option, index) => (
+                  <label key={index} className={`test-page-option ${currentQuestion.userAnswer === option ? 'test-page-selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="answer"
+                      value={option}
+                      checked={currentQuestion.userAnswer === option}
+                      onChange={() => handleAnswerChange(option)}
+                    />
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {currentQuestion.type === 'FITB' && (
+              <input
+                type="text"
+                value={currentQuestion.userAnswer || ''}
+                onChange={(e) => handleAnswerChange(e.target.value)}
+                className="test-page-input"
+                placeholder="Type your answer here"
+              />
+            )}
+          </div>
+
+          <div className="test-page-action-buttons">
+            <button className="test-page-clear-response-button" onClick={handleClearResponse}>
+              <FaTrash /> Clear Response
+            </button>
+            <button className="test-page-mark-for-review-button" onClick={handleMarkForReviewAndNext}>
+              <FaBookmark /> Mark for Review and Next
+            </button>
+            <button className="test-page-save-and-next-button" onClick={handleSaveAndNext}>
+              <FaArrowRight /> Save and Next
+            </button>
+            <button className="test-page-submit-button" onClick={handleSubmitTest}>
+              Submit Test
+            </button>
+          </div>
+        </div>
+
+        <div className="test-page-side-panel">
+          <div className="test-page-user-info">
+            <div className="test-page-avatar">
+              <FaUser />
+            </div>
+            <span>{JSON.parse(localStorage.getItem('userInfo'))?.userName || 'User'}</span>
+          </div>
+
+          <div className="test-page-navigation-panel">
             <h3>SECTION: Test</h3>
-            <div className="questionGrid">
-              {testDetails.questions.map((_, index) => (
+            <div className="test-page-question-grid">
+              {testResult.questions.map((_, index) => (
                 <button
                   key={index}
-                  className={`questionButton ${visitedQuestions[index] ? (markedForReview[index] ? 'markedForReview' : (userAnswers[index] ? 'answered' : 'visitedButNotAnswered')) : ''}`}
+                  className={`test-page-question-button ${
+                    visitedQuestions[index]
+                      ? markedForReview[index]
+                        ? 'test-page-marked-for-review'
+                        : _.userAnswer
+                        ? 'test-page-answered'
+                        : 'test-page-visited-but-not-answered'
+                      : ''
+                  }`}
                   onClick={() => handleQuestionChange(index)}
                 >
                   {index + 1}

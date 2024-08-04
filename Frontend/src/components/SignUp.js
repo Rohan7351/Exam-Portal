@@ -126,7 +126,7 @@ function SignUp() {
       password: formData.password,
       phoneNumber: formData.phoneNumber,
     };
-
+    console.log(userData);
     console.log(JSON.stringify(userData));
   
     try {

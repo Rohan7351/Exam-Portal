@@ -31,7 +31,9 @@ public class SecurityConfig {
 			"/user/assign/*",
 			"/user/create",
 			"/user/get/*",
-			"/user/exist/*"
+			"/user/exist/*",
+			"/user/update/user",
+			"/test/delete/*"
 	};
 	
 	@Bean

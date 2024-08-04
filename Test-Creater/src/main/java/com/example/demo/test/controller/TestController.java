@@ -3,8 +3,11 @@ package com.example.demo.test.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,23 @@ public class TestController {
 	List<Test> getAllTests(@RequestAttribute User user){
 		user.getEmail();
 		return service.getAllTest(user);
+	}
+	
+	@GetMapping("get/{id}")
+	Test getTestById(@PathVariable Integer id){
+		return service.getTestById(id);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	void deleteTestById(@PathVariable Integer id) {
+		System.out.println("delete user");
+		Test test = getTestById(id);
+		service.deleteTest(test);
+	}
+	
+	@PutMapping("/update")
+	void updateTest(@RequestBody Test test) {
+		service.updateTest(test);
 	}
 
 }

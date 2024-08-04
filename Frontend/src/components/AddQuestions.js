@@ -130,7 +130,7 @@ const AddQuestions = () => {
      console.error('request failed:', error);
    }
 
-    navigate('/homepage');
+    navigate('/creator/dashboard');
   };
 
   return (
@@ -280,7 +280,7 @@ const AddQuestions = () => {
         </Modal.Footer>
       </Modal>
       
-      <Button className="button-create-test" onClick={handleNavigateToDetails}>Create Test and Go to HomePage</Button>
+      <Button className="button-create-test" onClick={handleNavigateToDetails}>Create Test and Go to Dashboard</Button>
 
     </div>
   );

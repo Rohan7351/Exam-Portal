@@ -47,4 +47,19 @@ public class TestService {
 		if(user.getUserRole().equals(UserRole.ADMIN))return testRepository.findAll();
 		return new ArrayList<>( userRepository.findByUserName(user.getUserName()).getTests());	}
 
+	public Test getTestById(Integer id) {
+		// TODO Auto-generated method stub
+		return testRepository.findById(id).get();
+	}
+
+	public void deleteTest(Test test) {
+		// TODO Auto-generated method stub
+		testRepository.delete(test);
+	}
+
+	public void updateTest(Test test) {
+		// TODO Auto-generated method stub
+		testRepository.save(test);
+	}
+
 }

@@ -55,12 +55,13 @@ const Login = () => {
       localStorage.setItem('userInfo', JSON.stringify(userInfo.data));
       login();
       const userRole = userInfo.data.userRole;
+      console.log(userInfo)
       if (userRole === 'ADMIN') {
-        navigate('/admin');
+        navigate('/admin/dashboard');
       } else if (userRole === 'CREATER') {
         navigate('/creator/dashboard');
       } else if (userRole === 'USER') {
-        navigate('/user');
+        navigate('/user/dashboard');
       } else {
         navigate('/homepage');
       }

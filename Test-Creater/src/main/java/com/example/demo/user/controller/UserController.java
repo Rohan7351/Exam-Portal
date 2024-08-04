@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.test.model.Test;
@@ -44,14 +45,22 @@ public class UserController {
 	}
 	
 	@PutMapping("/update/user")
-	void updateUser(@RequestAttribute User user,User updateUser) {
+	void updateUser(@ RequestBody User updateUser,@RequestAttribute User user) {
 		userService.updateUser(user, updateUser);
 	}
 	
-	@DeleteMapping("delete/{userName}")
-	void deleteUser(@RequestAttribute User user,@PathVariable String userName) {
-		if(user.getUserRole().equals(UserRole.ADMIN))userService.deleteUser(userName);
+	@DeleteMapping("/delete/{userName}")
+	void deleteUser(@PathVariable String userName,@RequestAttribute User user) {
+		if(user.getUserRole().equals(UserRole.ADMIN))
+			userService.deleteUser(userName);
 	}
+	
+//	@DeleteMapping("/delete/{userName}")
+//	void deleteUser(@PathVariable String userName) {
+////		if(user.getUserRole().equals(UserRole.ADMIN))
+//			userService.deleteUser(userName);
+//	}
+	
 	
 	@PostMapping("/assign/{userName}")
 	void assignTest(@PathVariable String userName,@RequestBody Test test) {

@@ -52,10 +52,36 @@ const CreatorPage = () => {
     setShowModal(false);
   };
 
-  const saveInput = (username) => {
+  const saveInput = async (username) => {
     console.log(`Assigning test ID ${selectedTest.id} to ${username}`);
-    // Add API call or other logic to save the username
-  };
+    console.log(selectedTest);
+    
+    // Retrieve the JWT token from local storage
+    const token = localStorage.getItem('jwtToken');
+    
+    // Ensure the token is available
+    if (!token) {
+        console.error('No JWT token found');
+        return;
+    }
+    
+    try {
+        // Make the POST request to assign the test
+        const response = await axios.post(`http://localhost:9900/user/assign/${username}`, selectedTest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Add the JWT token to the Authorization header
+            }
+        });
+        
+        // Handle successful response
+        console.log('Test assigned successfully:', response.data);
+        // Optionally, you might want to notify the user or refresh the list of tests
+    } catch (error) {
+        console.error('Error assigning test:', error);
+        // Handle errors (e.g., show an error message to the user)
+    }
+};
 
   return (
     <div className="creator-page container">

@@ -3,7 +3,7 @@ import './HomePage.css';
 
 const Home = () => {
   return (
-    <main>
+    <div>
       <section className="hero">
         <div className="container">
           <h1>Welcome to ExamZone</h1>
@@ -12,7 +12,7 @@ const Home = () => {
         </div>
       </section>
       {/* Add more sections for your home page content here */}
-    </main>
+    </div>
   );
 };
 

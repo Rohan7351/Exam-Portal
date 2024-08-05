@@ -146,9 +146,13 @@ const CreatorList = () => {
                 <Form.Control type="text" name="phoneNumber" value={editingCreator.phoneNumber} onChange={handleInputChange} />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Specialization</Form.Label>
-                <Form.Control type="text" name="specialization" value={editingCreator.specialization} onChange={handleInputChange} />
-              </Form.Group>
+        <Form.Label>Role</Form.Label>
+        <Form.Select name="userRole" value={editingCreator.userRole} onChange={handleInputChange}>
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+          <option value="CREATER">CREATER</option>
+        </Form.Select>
+      </Form.Group>
             </Form>
           )}
         </Modal.Body>

@@ -1,37 +1,85 @@
-/* CreatorPage.css */
-
 .creator-page {
-  padding: 20px;
+  padding: 2rem 0;
 }
 
-.test-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px; /* Adjust gap between cards */
-  justify-content: center;
+.creator-page__title {
+  color: #333;
+  font-weight: bold;
+  text-align: center;
 }
 
-.test-card {
-  background: #fff;
-  border: 1px solid #ddd;
+.creator-page__statistics {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
   border-radius: 8px;
-  padding: 16px;
-  width: calc(20% - 16px); /* 5 cards in a row, minus gap */
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.creator-page__statistics h4 {
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+
+.creator-page__statistics p {
+  margin-bottom: 0.25rem;
+}
+
+.creator-page__filter {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.creator-page__test-cards {
+  margin-top: 2rem;
+}
+
+.creator-page__test-card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.creator-page__test-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
 }
 
-.assign-button {
-  margin-top: 16px; /* Ensure button is at the bottom of the card */
+.creator-page__test-card-title {
+  color: #007bff;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
 }
 
-@media (max-width: 768px) {
-  .test-card {
-    width: calc(50% - 16px); /* Two cards in a row on small screens */
+.creator-page__test-card p {
+  margin-bottom: 0.4rem;
+}
+
+.creator-page__test-card-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.creator-page__test-card-actions .btn {
+  flex: 1;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 575px) {
+  .creator-page__test-card-actions {
+    flex-direction: column;
   }
-}
 
-@media (max-width: 576px) {
-  .test-card {
-    width: calc(100% - 16px); /* One card in a row on extra small screens */
+  .creator-page__test-card-actions .btn {
+    margin: 0.25rem 0;
   }
 }

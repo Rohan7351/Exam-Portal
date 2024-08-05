@@ -42,7 +42,8 @@ const Login = () => {
         password: formData.password
       });
 
-      localStorage.removeItem('jwtToken');
+      // localStorage.removeItem('jwtToken');
+
       localStorage.setItem('jwtToken', response.data);
   
       const userInfo = await axios.get(`http://localhost:9900/user/get/${formData.username}`, {
@@ -51,11 +52,11 @@ const Login = () => {
           'Authorization': `Bearer ${response.data}`
         }
       });
-  
       localStorage.setItem('userInfo', JSON.stringify(userInfo.data));
       login();
       const userRole = userInfo.data.userRole;
       console.log(userInfo)
+      console.log(userInfo.data);
       if (userRole === 'ADMIN') {
         navigate('/admin/dashboard');
       } else if (userRole === 'CREATER') {
@@ -63,7 +64,7 @@ const Login = () => {
       } else if (userRole === 'USER') {
         navigate('/user/dashboard');
       } else {
-        navigate('/homepage');
+       alert(`User role is ${userInfo}`);
       }
     } catch (error) {
       setLoginError('Invalid username or password. Please try again.');

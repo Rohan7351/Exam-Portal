@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Row, Col, Card, Button, ListGroup } from 'react-bootstrap';
-import { FaClipboardList, FaUserCircle, FaSignOutAlt, FaClock, FaFolder } from 'react-icons/fa';
+import { FaCalendarAlt,FaBook,FaClipboardList, FaUserCircle, FaSignOutAlt, FaClock, FaFolder } from 'react-icons/fa';
 import './UserDashboard.css';
 
 const UserDashboard = () => {
@@ -75,8 +75,10 @@ const UserDashboard = () => {
                                 tests.map((test) => (
                                     <ListGroup.Item key={test.id} className="test-item">
                                         <h3>{test.title}</h3>
+                                        <p><FaBook /> Name: {test.title} </p>
                                         <p><FaFolder /> Category: {test.category}</p>
                                         <p><FaClock /> Duration: {test.duration} minutes</p>
+                                        <p><FaCalendarAlt /> Scheduled Time: {test.startTime} </p>
                                         <Button
                                             variant="primary"
                                             onClick={() => handleTakeTest(test)}

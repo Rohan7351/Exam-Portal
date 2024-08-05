@@ -54,6 +54,24 @@ public class TestService {
 
 	public void deleteTest(Test test) {
 		// TODO Auto-generated method stub
+          Integer testId = test.getId();
+	        // Remove the Test from all User entities that reference it
+		Set<User> usersWithTest = userRepository.findUsersByTestId(testId);
+
+        // Remove the Test from all Users
+        for (User user : usersWithTest) {
+            user.getTests().remove(test);
+            userRepository.save(user); // Save changes to User entity
+        }
+        
+        Set<Question> questions = test.getQuestions();
+        if (questions != null) {
+            for (Question question : questions) {
+                questionRepository.delete(question);
+            }
+        }
+
+		
 		testRepository.delete(test);
 	}
 

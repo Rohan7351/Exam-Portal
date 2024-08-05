@@ -44,10 +44,16 @@ public class UserController {
 		return userService.existByUserName(userName);
 	}
 	
+//	@PutMapping("/update/user")
+//	void updateUser(@ RequestBody User updateUser,@RequestAttribute User user) {
+//		userService.updateUser(user, updateUser);
+//	}
+	
 	@PutMapping("/update/user")
-	void updateUser(@ RequestBody User updateUser,@RequestAttribute User user) {
-		userService.updateUser(user, updateUser);
+	void updateUser(@ RequestBody User updateUser) {
+		userService.updateUser(updateUser);
 	}
+
 	
 	@DeleteMapping("/delete/{userName}")
 	void deleteUser(@PathVariable String userName,@RequestAttribute User user) {

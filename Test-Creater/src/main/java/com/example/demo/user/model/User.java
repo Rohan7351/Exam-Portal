@@ -32,7 +32,7 @@ public class User {
 	private String id;
 	
 	@Enumerated(EnumType.STRING)
-	private UserRole userRole=UserRole.USER;
+	private UserRole userRole;
 	
 	private String name;
 	

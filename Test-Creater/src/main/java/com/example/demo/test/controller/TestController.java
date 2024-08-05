@@ -46,6 +46,7 @@ public class TestController {
 	
 	@DeleteMapping("/delete/{id}")
 	void deleteTestById(@PathVariable Integer id) {
+		
 		System.out.println("delete user");
 		Test test = getTestById(id);
 		service.deleteTest(test);

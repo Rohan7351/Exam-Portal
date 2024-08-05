@@ -22,6 +22,12 @@ public class UserService {
 	private final TestRepository testRepository;
 	
 	public void insertUser(User user) {
+		if(user.getUserRole()==null) {
+			UserRole userRole=UserRole.USER;
+			user.setUserRole(userRole);
+		}
+		
+			
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
@@ -34,10 +40,10 @@ public class UserService {
 		return userRepository.existsByUserName(userName);
 	}
 	
-	public void updateUser(User user,User updateUser) {
-		if(user.getUserRole().equals(UserRole.ADMIN)||user.getId()==updateUser.getId()){
+	public void updateUser(User updateUser) {
+//		if(user.getId()==updateUser.getId()){
 			userRepository.save(updateUser);
-		}
+//		}
 	}
 	
 	public void deleteUser(String userName) {

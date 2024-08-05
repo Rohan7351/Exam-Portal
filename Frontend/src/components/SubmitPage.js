@@ -8,9 +8,8 @@ const SubmitPage = () => {
   const { testResult } = location.state || {};
 
   React.useEffect(() => {
-    // Print the data to console
-    
     console.log('Test Result Data:', testResult);
+    console.log(JSON.stringify(testResult));
   }, [testResult]);
 
   if (!testResult) {

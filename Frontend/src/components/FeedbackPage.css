@@ -1,0 +1,92 @@
+.feedback-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+
+  /* Add this to your existing FeedbackPage.css */
+
+.feedback-summary {
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.feedback-summary p {
+  margin: 0.5rem 0;
+  font-weight: bold;
+  color: #333;
+}
+
+  
+  .feedback-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+  
+  .feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .rating-container p {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .star-rating {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .star-rating input[type="radio"] {
+    display: none;
+  }
+  
+  .star {
+    cursor: pointer;
+    transition: color 200ms;
+  }
+  
+  .feedback-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .feedback-text-container label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .feedback-text-container textarea {
+    width: 100%;
+    height: 150px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+  }
+  
+  .submit-feedback {
+    padding: 0.75rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-feedback:hover {
+    background-color: #45a049;
+  }

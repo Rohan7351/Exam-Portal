@@ -33,7 +33,6 @@ const CreateUser = () => {
         }
       });
         
-      // Handle success
       setSuccess('User created successfully!');
       
       // Reset form after successful submission

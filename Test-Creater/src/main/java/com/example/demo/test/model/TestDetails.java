@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.Set;
 
 import com.example.demo.question.model.Question;
+import com.example.demo.result.model.Result;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;

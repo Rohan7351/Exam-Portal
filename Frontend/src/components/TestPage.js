@@ -168,7 +168,7 @@ const TestPage = () => {
     if (userConfirmed) {
       console.log("User confirmed");
       localStorage.removeItem('timeLeft');
-      navigate('/submit', { state: { testResult } });
+      navigate('/feedback', { state: { testResult } });
     } else {
       console.log("User canceled");
     }

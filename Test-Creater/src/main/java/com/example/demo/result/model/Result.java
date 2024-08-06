@@ -1,11 +1,12 @@
-package com.example.demo.test.model;
+package com.example.demo.result.model;
+
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
 import com.example.demo.question.model.Question;
-import com.example.demo.result.model.Result;
+import com.example.demo.test.model.Test;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,40 +31,18 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Test {
+public class Result {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	private String userId;
+	private int testId;
 	
-	private String title;
-	
-	@Enumerated(EnumType.STRING)
-	private DifficultyLevel difficultyLevel;
-	
-	private int passingScore;
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Question> questions;
-	
-
-	
-	private int duration;
-	
-	private LocalDateTime startTime;
-	
-	private LocalDateTime endTime;
-	
-	@Enumerated(EnumType.STRING)
-	private Category category;
-	
-	@Column(length = 2500)
-	private String description;
-	
-
-	public Test(int id) {
-		super();
-		this.id = id;
-	}
+	private int rating;
+	private String feedback;
+	private int totalMarks;
+	private int score;
+	private int correctQuestion;
 	
 
 }

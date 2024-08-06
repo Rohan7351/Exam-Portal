@@ -22,6 +22,9 @@ import TestList from './components/TestList';
 import UserList from './components/UserList';
 import CreatorList from './components/CreatorList';
 import CreateUser from './components/CreateUser';
+import FeedbackPage from './components/FeedbackPage';
+import FeedbackList from './components/FeedBackList';
+import ResultList from './components/ResultList';
 
 function App() {
   return (/*  */
@@ -51,6 +54,10 @@ function App() {
         <Route path="/admin/users" element={<UserList/>} />
         <Route path="/admin/creators" element={<CreatorList/>} />
         <Route path="/admin/tests" element={<TestList/>} />
+        <Route path="/feedback" element={<FeedbackPage/>} />
+        <Route path="/feedbacklist" element={<FeedbackList/>} />
+        <Route path="/resultslist" element={<ResultList />} />
+
 
         {/* <Route path="/admin/manage-tests" component={ManageTests} /> */}
         {/* <Route path="/admin/view-results" component={ViewResults} /> */}

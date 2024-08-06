@@ -33,13 +33,13 @@ public class TestController {
 		service.insertTest(details,user);
 	}
 	
-	@GetMapping("get/all")
+	@GetMapping("/get/all")
 	List<Test> getAllTests(@RequestAttribute User user){
 		user.getEmail();
 		return service.getAllTest(user);
 	}
 	
-	@GetMapping("get/{id}")
+	@GetMapping("/get/{id}")
 	Test getTestById(@PathVariable Integer id){
 		return service.getTestById(id);
 	}

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./AddQuestions.css";
 
+
 const AddQuestions = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const AddQuestions = () => {
     endTime: '',
     category: '',
     description: '',
-    questions: []
+    questions: [],
   });
 
   const [showModal, setShowModal] = useState(false);

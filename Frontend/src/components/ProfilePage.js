@@ -1,18 +1,24 @@
+// src/ProfilePage.js
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Image, Container, Row, Col, Alert } from 'react-bootstrap';
 import { FaUser, FaEnvelope, FaPhone, FaLock, FaPencilAlt } from 'react-icons/fa';
 import axios from 'axios';
+import { useAuth } from './AuthContest'; // Import useAuth
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './ProfilePage.css';
 
 const ProfilePage = () => {
+  const { logout } = useAuth(); // Use logout function from AuthContext
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const data = JSON.parse(localStorage.getItem('userInfo'));
   const [user, setUser] = useState(data);
   const [editMode, setEditMode] = useState({});
-  const [editedUser, setEditedUser] = useState({...user});
+  const [editedUser, setEditedUser] = useState({ ...user });
   const [notification, setNotification] = useState(null);
 
   const toggleEditMode = (field) => {
-    setEditMode(prev => ({...prev, [field]: !prev[field]}));
+    setEditMode((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handleInputChange = (e) => {
@@ -47,17 +53,26 @@ const ProfilePage = () => {
         showNotification('Name, username, and email are required fields', 'warning');
         return;
       }
-
+      console.log("Updated Data" + JSON.stringify(editedUser));
       await axios.put(`http://localhost:9900/user/update/user`, editedUser, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+        },
       });
 
       setUser(editedUser);
       localStorage.setItem('userInfo', JSON.stringify(editedUser));
       setEditMode({});
       showNotification('Profile updated successfully!', 'success');
+      
+      // Log out and navigate to /login
+
+     
+
+      logout();
+      alert("Information Updated plese login again... ");
+      navigate('/login');
+      
     } catch (error) {
       console.error('Error updating user:', error);
       showNotification('Failed to update profile. Please try again.', 'danger');
@@ -92,7 +107,7 @@ const ProfilePage = () => {
               <div className="profile-info">
                 <p>
                   <FaUser className="info-icon" />
-                  <strong>Username:</strong> 
+                  <strong>Username:</strong>
                   {editMode.userName ? (
                     <Form.Control
                       type="text"
@@ -107,7 +122,7 @@ const ProfilePage = () => {
                 </p>
                 <p>
                   <FaEnvelope className="info-icon" />
-                  <strong>Email:</strong> 
+                  <strong>Email:</strong>
                   {editMode.email ? (
                     <Form.Control
                       type="email"
@@ -122,7 +137,7 @@ const ProfilePage = () => {
                 </p>
                 <p>
                   <FaPhone className="info-icon" />
-                  <strong>Phone Number:</strong> 
+                  <strong>Phone Number:</strong>
                   {editMode.phoneNumber ? (
                     <Form.Control
                       type="tel"

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Table, Container, Card, Button, Modal, Form } from 'react-bootstrap';
-import { FaUsers, FaEdit, FaTrash } from 'react-icons/fa';
+import {FaList, FaUsers, FaEdit, FaTrash } from 'react-icons/fa';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -50,7 +51,8 @@ const UserList = () => {
     //   }
     // });
 
-   
+    
+  
 
 
   };
@@ -99,6 +101,16 @@ const UserList = () => {
     setEditingUser({ ...editingUser, [e.target.name]: e.target.value });
   };
 
+  const navigate = useNavigate();
+
+    const handleSeeResults = (user) => {
+       console.log("JsoN user id string  "+user);
+       console.log("JsoN user id string  "+user.userName);
+      localStorage.setItem("selectedUserName",user.userName);
+      localStorage.setItem("selectedUserId",user.id);
+      navigate('/resultslist', { state: { user } });
+    };
+
   return (
     <Container className="mt-4">
       <Card>
@@ -134,6 +146,9 @@ const UserList = () => {
                     </Button>
                     <Button variant="danger" size="sm" onClick={() => handleDelete(user.userName)}>
                       <FaTrash /> Delete
+                    </Button>
+                    <Button variant="info" size="sm" onClick={() => handleSeeResults(user)}>
+                      <FaList /> See Results
                     </Button>
                   </td>
                 </tr>

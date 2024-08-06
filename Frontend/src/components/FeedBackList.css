@@ -1,0 +1,64 @@
+.feedback-page {
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.feedback-page__title {
+  color: #333;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.feedback-page__test-info {
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.feedback-page__feedback-title {
+  color: #555;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.feedback-page__feedback-card {
+  height: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.feedback-page__feedback-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feedback-page__feedback-card .card-body {
+  padding: 15px;
+}
+
+.feedback-page__feedback-card .card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.feedback-page__feedback-card .card-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .feedback-page__feedback-card {
+      margin-bottom: 15px;
+  }
+}

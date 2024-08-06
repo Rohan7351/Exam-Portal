@@ -6,9 +6,11 @@ const SubmitPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { testResult } = location.state || {};
+  const {feedbackData} = location.state || {};
 
   React.useEffect(() => {
     console.log('Test Result Data:', testResult);
+    console.log('FeedBack Data:', feedbackData);
     console.log(JSON.stringify(testResult));
   }, [testResult]);
 

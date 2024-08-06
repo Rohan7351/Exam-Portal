@@ -33,7 +33,11 @@ public class SecurityConfig {
 			"/user/get/*",
 			"/user/exist/*",
 			"/user/update/user",
-			"/test/delete/*"
+			"/test/delete/*",
+			"/result/get/*",
+			"/test/get/*",
+			"result/get/userid/*"
+			
 	};
 	
 	@Bean

@@ -5,7 +5,7 @@ import { Modal, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import emailjs from 'emailjs-com';
 import config from '../config';
-import { FaFilter, FaCopy, FaUserPlus } from 'react-icons/fa';
+import { FaComment, FaFilter, FaCopy, FaUserPlus } from 'react-icons/fa';
 import './CreatorPage.css';
 
 const CreatorPage = () => {
@@ -74,6 +74,7 @@ const CreatorPage = () => {
     }
   }, [selectedDifficulty, tests]);
 
+
   const handleShow = (test) => {
     setSelectedTest(test);
     setShowModal(true);
@@ -90,12 +91,15 @@ const CreatorPage = () => {
   };
 
   const saveInput = async (username) => {
-    const token = localStorage.getItem('jwtToken');
+  const token = localStorage.getItem('jwtToken');
     
     if (!token) {
         console.error('No JWT token found');
         return;
     }
+
+
+ 
     
     try {
         const assignUserData = await axios.get(`http://localhost:9900/user/get/${username}`, selectedTest, {
@@ -170,6 +174,12 @@ const CreatorPage = () => {
   }
   };
 
+  const handleSeeFeedback = async (testId) => {
+    console.log("Creater selcted id"+testId);
+    localStorage.setItem("testId",testId);
+    navigate('/feedbacklist', { state: { testId } });
+  };
+
   return (
     <Container className="creator-page">
       <h1 className="creator-page__title my-5">Created Tests List</h1>
@@ -212,6 +222,9 @@ const CreatorPage = () => {
                 </Button>
                 <Button variant="secondary" onClick={() => handleCopy(test)}>
                   <FaCopy className="me-2" />Copy
+                </Button>
+                <Button variant="info" onClick={() => handleSeeFeedback(test.id)}>
+                  <FaComment className="me-2" />See Feedback
                 </Button>
               </div>
             </div>
